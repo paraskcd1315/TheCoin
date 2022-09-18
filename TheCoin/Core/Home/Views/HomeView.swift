@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
+    @State var sort: Int = 0
     
     var body: some View {
         NavigationView {
@@ -16,16 +17,16 @@ struct HomeView: View {
                 ZStack {
                     VStack {
                         
-                            // Top Movers View
-                            TopMoversView(viewModel: viewModel)
+                        // Top Movers View
+                        TopMoversView(viewModel: viewModel)
                         
                         Divider().padding(.horizontal, 20)
-                            
-                            // All Coins View
-                            AllCoinsView(viewModel: viewModel)
+                        
+                        // All Coins View
+                        AllCoinsView(viewModel: viewModel)
                         
                     }
-
+                    
                     if viewModel.isLoadingData {
                         CustomLoadingIndicator()
                     }
@@ -40,9 +41,27 @@ struct HomeView: View {
             .scrollContentBackground(.hidden)
             .background(Color.theme.appBGColor)
             .refreshable {
-                viewModel.fetchCoinData()
+                viewModel.fetchCoinData(sort: sort)
             }
-
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Picker(selection: $sort, label: Text("Sorting options")) {
+                            Text("Market Cap Rank").tag(0)
+                            Text("Name").tag(1)
+                            Text("Price").tag(2)
+                            Text("Price Change").tag(3)
+                        }
+                        .onChange(of: sort) { newValue in
+                            viewModel.configureSortedCoins(sort: newValue)
+                        }
+                    }
+                    label: {
+                        Label("Sort by", systemImage: "arrow.up.arrow.down")
+                    }
+                }
+            }
+            
         }
         .accentColor(Color.theme.primaryTextColor)
     }

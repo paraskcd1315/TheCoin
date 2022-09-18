@@ -13,10 +13,10 @@ class HomeViewModel: ObservableObject {
     @Published var isLoadingData = true
     
     init() {
-        fetchCoinData()
+        fetchCoinData(sort: 0)
     }
     
-    func fetchCoinData() {
+    func fetchCoinData(sort: Int) {
         self.isLoadingData = true
         
         let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=cad&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h"
@@ -43,6 +43,7 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.coins = coins
                     self.configureTopMovingCoins()
+                    self.configureSortedCoins(sort: sort)
                     self.isLoadingData = false
                 }
             } catch let error {
@@ -51,6 +52,30 @@ class HomeViewModel: ObservableObject {
             }
         }
         .resume()
+    }
+    
+    func configureSortedCoins(sort: Int) {
+        switch(sort) {
+        case 1:
+            let sortedCoins = coins.sorted(by: { $0.name < $1.name })
+            self.coins = sortedCoins
+            return
+            
+        case 2:
+            let sortedCoins = coins.sorted(by: { $0.currentPrice > $1.currentPrice })
+            self.coins = sortedCoins
+            return
+            
+        case 3:
+            let sortedCoins = coins.sorted(by: { $0.priceChangePercentage24H > $1.priceChangePercentage24H })
+            self.coins = sortedCoins
+            return
+            
+        default:
+            let sortedCoins = coins.sorted(by: { $0.marketCapRank < $1.marketCapRank })
+            self.coins = sortedCoins
+            return
+        }
     }
     
     func configureTopMovingCoins() {
