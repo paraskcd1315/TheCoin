@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = HomeViewModel()
+    
     var body: some View {
         TabView {
             HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                     
+                }
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass.circle.fill")
                 }
         }
         .foregroundColor(Color.theme.primaryTextColor)

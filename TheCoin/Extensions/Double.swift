@@ -32,7 +32,7 @@ extension Double {
     }
     
     func toCurrency() -> String {
-        var currencySymbol: String? = NSLocale.current.currencySymbol
+        let currencySymbol: String? = NSLocale.current.currencySymbol
         return currencyFormatter.string(for: self) ?? "\(currencySymbol ?? "$")0.00"
     }
     
