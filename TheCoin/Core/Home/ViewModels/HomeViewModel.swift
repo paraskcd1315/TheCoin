@@ -11,15 +11,17 @@ class HomeViewModel: ObservableObject {
     @Published var coins = [Coin]()
     @Published var topMovingCoins = [Coin]()
     @Published var isLoadingData = true
+    var currencyCode: String? = NSLocale.current.currency?.identifier
     
     init() {
         fetchCoinData(sort: 0)
+        print(currencyCode ?? "USD")
     }
     
     func fetchCoinData(sort: Int) {
         self.isLoadingData = true
         
-        let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=cad&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h"
+        let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=\(currencyCode?.lowercased() ?? "usd")&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=24h"
         
         guard let url = URL(string: urlString) else { return }
         
