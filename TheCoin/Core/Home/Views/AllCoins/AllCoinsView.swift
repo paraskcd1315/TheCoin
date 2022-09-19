@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AllCoinsView: View {
-    @StateObject var viewModel: HomeViewModel
+    @StateObject var viewModel: ContentViewModel
     
     var body: some View {
         VStack(alignment: .leading) {

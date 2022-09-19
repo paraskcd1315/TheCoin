@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel = ContentViewModel()
     
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(viewModel: viewModel)
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                     
                 }
-            SearchView()
+            SearchView(viewModel: viewModel)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass.circle.fill")
                 }

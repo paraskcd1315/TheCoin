@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FilteredCoinsView: View {
-    @StateObject var viewModel: SearchViewModel
+    @StateObject var viewModel: ContentViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
